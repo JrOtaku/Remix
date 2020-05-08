@@ -1,0 +1,27 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+public class Fruit extends PhysicalObject{
+	public final int FRUITSIZE = 25;
+	public final int SCORE = 100;
+	
+	public Fruit(int x, int y)
+	{
+		this.xPos = x;
+		this.yPos = y;
+	}
+	
+	@Override
+	public void drawOn(Graphics2D g2) {
+		// TODO Auto-generated method stub
+		g2.setColor(Color.yellow);
+		g2.fillRect(xPos, yPos, FRUITSIZE, FRUITSIZE);
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

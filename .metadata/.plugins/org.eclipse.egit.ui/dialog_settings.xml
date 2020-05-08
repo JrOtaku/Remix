@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="0" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<item value="C:\Users\guajarea\git\public\.git" key="GitSelectRepositoryPage.lastRepository"/>
+	<list key="EGit.KnownHosts">
+		<item value="git.eclipse.org"/>
+		<item value="bitbucket.org"/>
+		<item value="ada.csse.rose-hulman.edu"/>
+		<item value="github.com"/>
+	</list>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="git@ada.csse.rose-hulman.edu:stouder/CSSE333-ConnectivityLab.git"/>
+		<item value="https://github.com/szalayvm/LoneStar.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/final-201930-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/singlylinkedlist-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/exam2-201930-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/ballworlds-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/linearlightsout-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/recursionhomework-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/implementingdesign2-guajarea.git"/>
+		<item value="https://ada.csse.rose-hulman.edu/201930-csse220/implementingdesign1-guajarea.git"/>
+	</list>
+	<list key="CommitDialog.authorValues">
+		<item value="JrOtaku &lt;emilya200.ea@gmail.com&gt;"/>
+	</list>
+	<list key="CommitDialog.committerValues">
+		<item value="JrOtaku &lt;emilya200.ea@gmail.com&gt;"/>
+	</list>
+	<section name="GitImportWizard">
+		<item value="true" key="GitProjectsImportPage.STORE_NESTED_PROJECTS"/>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.push.PushResultDialog.dialogBounds">
+		<item value="700" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="481" key="DIALOG_HEIGHT"/>
+		<item value="619" key="DIALOG_X_ORIGIN"/>
+		<item value="204" key="DIALOG_Y_ORIGIN"/>
+		<list key="sashWeights">
+			<item value="600"/>
+			<item value="400"/>
+		</list>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.pull.PullResultDialog.dialogBounds">
+		<item value="738" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="462" key="DIALOG_HEIGHT"/>
+		<item value="680" key="DIALOG_X_ORIGIN"/>
+		<item value="216" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="GitCommitMessageComponent">
+	</section>
+	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
+		<item value="500,500" key="STAGING_SASH_FORM_WEIGHT"/>
+		<item value="false" key="sortItemState"/>
+		<item value="500,500" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
+	</section>
+</section>

@@ -1,0 +1,237 @@
+package BST;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
+public class BinarySearchTree <T extends Comparable<T>> implements Iterable<T>{
+	private BinaryNode root;
+	
+	public BinarySearchTree(){
+		root = null;
+	}
+	
+	public BinarySearchTree(BinaryNode n){
+		root = n;
+	}
+	
+	public boolean isEmpty()
+	{
+		 return root == null;
+	}
+	
+	public int height()
+	{
+		if(root == null)
+		{
+			return -1;
+		}
+		return root.height();
+	}
+	
+	public int size()
+	{
+		if(root == null)
+		{
+			return 0;
+		}
+		return root.size();
+	}
+	
+	public ArrayList<T> toArrayList()
+	{
+		ArrayList<T> list = new ArrayList<T>();
+		if(root == null) return list;
+		root.toArrayList(list);
+		return list;
+	}
+	
+	public String toString()
+	{
+		return toArrayList().toString();
+	}
+	
+	public Object[] toArray()
+	{
+		ArrayList<T> list = toArrayList();
+		Object[] array = new Object[list.size()];
+		for(int i = 0; i < list.size(); i++)
+		{
+			array[i] = list.get(i);
+		}
+		return array;
+	}
+	
+	public boolean insert(T n)
+	{
+		if(n == null) throw new IllegalArgumentException();
+		if(root == null)
+		{
+			root = new BinaryNode(n);
+			return true;
+		}
+		return root.insert(n);
+	}
+
+	public Iterator<T> iterator() {
+		return new BSTIterator(root);
+	}
+	
+	public class BSTIterator implements Iterator<T> {
+		private Stack<BinaryNode> s = new Stack<BinaryNode>();
+		private Stack<Boolean> helperStack = new Stack<Boolean>();
+		public BSTIterator(BinaryNode root)
+		{
+			if(root != null) 
+			{
+				s.push(root);
+				helperStack.push(false);
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return !s.empty();
+		}
+
+		@Override
+		public T next() {
+			if(s.empty()) throw new NoSuchElementException();
+			BinaryNode temp = s.peek();
+			if(!helperStack.peek())
+			{
+				helperStack.pop();
+				helperStack.push(true);
+				while(temp.getLeftChild() != null)
+				{
+					s.push(temp.getLeftChild());
+					helperStack.push(true);
+					temp = temp.getLeftChild();
+				}
+			}
+			temp = s.pop();
+			helperStack.pop();
+			if(temp.getRightChild() != null)
+			{
+				s.push(temp.getRightChild());
+				helperStack.push(false);
+			}
+			return temp.getElement();
+		}
+
+	}
+	
+	public Iterator<T> preOrderIterator()
+	{
+		return new PreOrderIterator(root);
+	}
+	
+	public class PreOrderIterator implements Iterator<T>
+	{
+		private Stack<BinaryNode> s = new Stack<BinaryNode>();
+		public PreOrderIterator(BinaryNode root)
+		{
+			if(root != null)s.push(root);
+		}
+		public boolean hasNext() {
+			return !s.empty();
+		}
+
+		@Override
+		public T next() {
+			if(s.empty()) throw new NoSuchElementException();
+			BinaryNode temp = s.pop();
+			if(temp.getRightChild()!=null) s.push(temp.getRightChild());
+			if(temp.getLeftChild()!=null)s.push(temp.getLeftChild());
+			return temp.getElement();
+		}
+	}
+	
+	public class BinaryNode{
+		private T element;
+		private BinaryNode leftChild;
+		private BinaryNode rightChild;
+		
+		public BinaryNode(T element){
+			this.element = element;
+			this.leftChild = null;
+			this.rightChild = null;		
+		}
+		
+//		public void setLeftChild(BinaryNode leftChild){
+//			this.leftChild = leftChild;
+//		}
+		
+//		public void setRightChild(BinaryNode rightChild){
+//			this.rightChild = rightChild;
+//		}
+		
+		public BinaryNode getLeftChild(){
+			return leftChild;
+		}
+		
+		public BinaryNode getRightChild(){
+			return rightChild;
+		}
+		
+		public T getElement(){
+			return element;
+		}
+		
+		public int size(){
+			int numnodes = 1;
+			if(leftChild != null) numnodes += leftChild.size();
+			if(rightChild != null) numnodes += rightChild.size();
+			return numnodes;
+		}
+		
+		public int height(){
+			int leftHeight = 0;
+			int rightHeight = 0;
+			if(leftChild != null) leftHeight += leftChild.height() + 1;
+			if(rightChild != null) rightHeight += rightChild.height() + 1;
+			if(rightHeight > leftHeight) return rightHeight;
+			return leftHeight;
+		}
+		
+		public void toArrayList(ArrayList<T> list)
+		{
+			if(leftChild != null)
+			{
+				leftChild.toArrayList(list);
+			}
+			list.add(getElement());
+			if(rightChild != null)
+			{
+				rightChild.toArrayList(list);
+			}
+		}
+		
+		public boolean insert(T n)
+		{
+			if(n.compareTo(element) < 0)
+			{
+				if(leftChild == null)
+				{
+					leftChild = new BinaryNode(n);
+					return true;
+				}
+				return leftChild.insert(n);
+			}
+			else if(n.compareTo(element) > 0)
+			{
+				if(rightChild == null)
+				{
+					rightChild = new BinaryNode(n);
+					return true;
+				}
+				return rightChild.insert(n);
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+}

@@ -1,0 +1,41 @@
+import java.awt.Graphics2D;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.Timer;
+
+/**
+ * The main class for your arcade game.
+ * 
+ * You can design your game any way you like, but make the game start by running
+ * main here.
+ * 
+ * Also don't forget to write javadocs for your classes and methods.
+ * 
+ * @author <Emily Guajardo, Joshua Bressman, Jack Davidson>
+ *
+ */
+public class Main {
+
+	/**
+	 * @param args
+	 */
+	private static final int DELAY=10;
+	
+	public static void main(String[] args) {
+		System.out.println("Begin your arcade game program here!");
+		
+		Graphics2D g;
+		
+		GameViewer viewer = new GameViewer();
+		GameComponent newComp = new GameComponent(g);
+		viewer.addComponent(newComp);
+		
+		
+		/*
+		 * ActionListener advanceListener;
+		 * Timer timer = new Timer(DELAY, advanceListener);
+		 */
+	}
+
+}

@@ -1,0 +1,41 @@
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D.Double;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComponent;
+
+public class GameComponent extends JComponent {
+	
+	private Character newChar;
+	
+	public GameComponent() {
+		this.newChar = new Character(100,100);
+	}
+	
+	public void drawSquare(Graphics2D g)
+	{
+		g.drawRect(500, 975, 25, 25);
+	}
+// refer to raindrops game gamecomponent class (this adds physical objects to the frame)
+	
+	public void createHero() {
+		
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		
+		g.fillRect(900, 900, 950, 950);
+		
+		ArrayList<PhysicalObject> physObjects = new ArrayList<>();
+		physObjects.add(newChar);
+		
+		for(PhysicalObject physObj:physObjects) {
+			physObj.drawOn(g2);
+		}
+	}
+}

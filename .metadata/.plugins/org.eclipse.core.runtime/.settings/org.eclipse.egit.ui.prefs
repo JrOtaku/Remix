@@ -1,0 +1,4 @@
+commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>Added comments&\#x0A;</message>\r\n<message>Made the text larger in the search function</message>\r\n<message>Refactored Map Visualizer&\#x0A;&\#x0A;Added more comments&\#x0A;</message>\r\n<message>The stars are added to the gui&\#x0A;</message>\r\n<message>More Comments&\#x0A;More to Come</message>\r\n<message>Added comments to GUI frame and RoadMapStart</message>\r\n<message>Changed some of the titles&\#x0A;</message>\r\n<message>Added colors to tab</message>\r\n<message>I started messing with colors, I will finish later tonight&\#x0A;</message>\r\n<message>It prints to the gui</message>\r\n</messages>
+eclipse.preferences.version=1
+resourcehistory_graph_split=500,500
+resourcehistory_rev_split=700,300

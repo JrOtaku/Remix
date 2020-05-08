@@ -1,0 +1,142 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+public class Graph<T extends Comparable<? super T>> implements Iterable<T> {
+	private HashMap<T, Node> nodes;
+	private T root = null;
+	
+	public Graph(){
+		nodes = new HashMap<T, Node>();
+	}
+	
+	public ArrayList<T> getAllFromRoot()
+	{
+		ArrayList<T> all = new ArrayList<T>();
+		//System.out.println(root);
+		if(root != null)
+		{
+			ArrayList<Node> nodes = getNode(root).getAllNeighbors();
+			//System.out.println("Nodes in getAllFromRoot(): " + nodes);
+			for(int i = 0; i < nodes.size(); i++)
+			{
+				//System.out.println("Nodes in For Loop: " + nodes.get(i));
+				//System.out.println(nodes.get(i).getValue());
+				all.add(nodes.get(i).getValue());
+				//System.out.println(all);
+			}
+		}
+		return all;
+	}
+	
+	public ArrayList<T> getAllValues()
+	{
+		ArrayList<T> all = new ArrayList<T>();
+		for(Entry<T, Graph<T>.Node> n : nodes.entrySet())
+		{
+			//System.out.println(n.getValue().element);
+			all.add(n.getValue().element);
+		}
+		return all;
+	}
+	
+	public boolean isEmpty() {
+		return nodes.isEmpty();
+	}
+	
+	public T getRoot() {
+		return root;
+	}
+	
+	public Node getNode(T key){
+		return nodes.get(key);
+	}
+
+	public boolean addNode(T e) {
+		nodes.put(e, new Node(e));
+		if (root == null) root = e;
+		return true;
+	}
+	
+	public boolean addEdge(T e1, T e2, int cost) {
+		if (!nodes.containsKey(e1) && !nodes.containsKey(e2)) return false;
+		nodes.get(e1).addEdge(e2, cost);
+	    return true;
+	}
+	
+	public Iterator<T> iterator() {
+		return nodes.keySet().iterator();
+	}
+	
+	public String toString(){
+		String s = "";
+		for (Node n : nodes.values()){
+			s += n.element + " : ";
+			for (Edge e : n.neighbors){
+				s+= e.otherNode.element + " ";
+			}
+			s+= "\n";
+		}
+		return s;
+	}
+	
+	public class Node {
+		public T element;
+		public ArrayList<Edge> neighbors;
+		
+		public Node(T e){
+			element = e;
+			neighbors = new ArrayList<Edge>();
+		}
+		
+		public T getValue() {
+			return element;
+		}
+		
+		public ArrayList<Edge> getEdges(){
+			return neighbors;
+		}
+		
+		public ArrayList<Node> getAllNeighbors()
+		{
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			//System.out.println("Element: " + element);
+			//System.out.println("Neighbors: " + neighbors);
+			nodes.add(this);
+			for(int i = 0; i < neighbors.size(); i++)
+			{
+				
+				//System.out.println("Edge: " + neighbors.get(i));
+				if(!nodes.contains(neighbors.get(i).getOtherNode())) nodes.add(neighbors.get(i).getOtherNode());
+				//System.out.println("HERE: " + neighbors.get(i).getOtherNode().getAllNeighbors());
+				nodes.addAll(neighbors.get(i).getOtherNode().getAllNeighbors());
+				//System.out.println("Nodes in for loop: " + nodes);
+				//nodes.addAll(neighbors.get(i).getOtherNode().getAllNeighbors());
+			}
+			//System.out.println("Nodes: " + nodes);
+			return nodes;
+		}
+		
+		public void addEdge(T e, int cost) {
+			Node otherNode = nodes.get(e);
+			neighbors.add(new Edge(otherNode, cost));
+		}
+		
+	}
+	
+	public class Edge {
+		public Node otherNode;
+		private int cost;
+		
+		public Edge(Node n, int c){
+			otherNode = n;
+			cost = c;
+		}
+		
+		public Node getOtherNode(){
+			return otherNode;
+		}
+	}
+
+}

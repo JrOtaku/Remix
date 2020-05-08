@@ -1,0 +1,103 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+public class Graph<T extends Comparable<? super T>> implements Iterable<T> {
+	private HashMap<T, Node> nodes;
+	private T root = null;
+	
+	public Graph(){
+		nodes = new HashMap<T, Node>();
+	}
+	
+	public ArrayList<T> getAllValues()
+	{
+		ArrayList<T> all = new ArrayList<T>();
+		for(Entry<T, Graph<T>.Node> n : nodes.entrySet())
+		{
+			System.out.println(n.getValue().element);
+			all.add(n.getValue().element);
+		}
+		return all;
+	}
+	
+	public boolean isEmpty() {
+		return nodes.isEmpty();
+	}
+	
+	public T getRoot() {
+		return root;
+	}
+	
+	public Node getNode(T key){
+		return nodes.get(key);
+	}
+
+	public boolean addNode(T e) {
+		nodes.put(e, new Node(e));
+		if (root == null) root = e;
+		return true;
+	}
+	
+	public boolean addEdge(T e1, T e2, int cost) {
+		if (!nodes.containsKey(e1) && !nodes.containsKey(e2)) return false;
+		nodes.get(e1).addEdge(e2, cost);
+	    return true;
+	}
+	
+	public Iterator<T> iterator() {
+		return nodes.keySet().iterator();
+	}
+	
+	public String toString(){
+		String s = "";
+		for (Node n : nodes.values()){
+			s += n.element + " : ";
+			for (Edge e : n.neighbors){
+				s+= e.otherNode.element + " ";
+			}
+			s+= "\n";
+		}
+		return s;
+	}
+	
+	public class Node {
+		public T element;
+		public ArrayList<Edge> neighbors;
+		
+		public Node(T e){
+			element = e;
+			neighbors = new ArrayList<Edge>();
+		}
+		
+		public T getValue() {
+			return element;
+		}
+		
+		public ArrayList<Edge> getEdges(){
+			return neighbors;
+		}
+		
+		public void addEdge(T e, int cost) {
+			Node otherNode = nodes.get(e);
+			neighbors.add(new Edge(otherNode, cost));
+		}
+		
+	}
+	
+	public class Edge {
+		public Node otherNode;
+		private int cost;
+		
+		public Edge(Node n, int c){
+			otherNode = n;
+			cost = c;
+		}
+		
+		public Node getOtherNode(){
+			return otherNode;
+		}
+	}
+
+}

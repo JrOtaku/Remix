@@ -1,0 +1,104 @@
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
+
+public class MovementListener implements KeyListener {
+
+	private GameComponent gc;
+	private LevelReader lr;
+	public long time;
+	
+	public MovementListener(Hero hero, GameComponent gc, LevelReader lr) {
+		this.gc = gc;
+		this.lr = lr;
+		this.time = System.currentTimeMillis();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_LEFT) {
+            gc.hero.xVel = -10;
+            //System.out.println("Left button pressed");
+        }
+
+        else if (key == KeyEvent.VK_RIGHT) {
+            gc.hero.xVel = 10;
+            //System.out.println("Right button pressed");
+        }
+        if (key==KeyEvent.VK_UP) {
+        	if(gc.hero.onFloor) {
+			gc.hero.yVel = -25;
+			gc.hero.yPos -=2;
+        	}
+			//System.out.println("Up button pressed");
+		}
+		if(key==KeyEvent.VK_U)
+		{
+			gc.changingLevel = true;
+			try {
+				lr.getNextFile();
+				lr.readAndCreate(gc);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			gc.changingLevel = false;
+			//System.out.println("U button pressed");
+		}
+		if(key==KeyEvent.VK_D)
+		{
+			gc.changingLevel = true;
+			try {
+				lr.getPreviousFile();
+				lr.readAndCreate(gc);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			gc.changingLevel = false;
+			//System.out.println("D button pressed");	
+		}
+		if(key==KeyEvent.VK_SPACE) {
+			if(this.time< System.currentTimeMillis())
+			{
+				this.time = System.currentTimeMillis() + 100;
+				gc.createBubble(gc.hero.xPos, gc.hero.yPos,gc.hero.isRight, true);
+
+			}
+			//System.out.println("space pressed");
+			
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
+		int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_LEFT) {
+            gc.hero.xVel = 0;
+        }
+
+        if (key == KeyEvent.VK_RIGHT) {
+            gc.hero.xVel = 0;
+        }
+        if (key == KeyEvent.VK_UP) {
+            gc.hero.yVel = 0;
+        }
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
+
+}

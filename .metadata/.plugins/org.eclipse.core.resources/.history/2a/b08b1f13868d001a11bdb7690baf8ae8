@@ -1,0 +1,83 @@
+import java.awt.GridLayout;
+import java.security.SecureRandom;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Base64;
+import java.util.Random;
+
+
+public class Interface {
+	
+	private final String URL = "jdbc:sqlserver://golem.csse.rose-hulman.edu;databaseName=remix;user=SodaBaseUserguajarea30;password={Password123}";
+	private Connection connection = null;
+	
+	public static void main(String args[]) {
+		JFrame frame = new JFrame();
+		frame.setSize(500,300);
+		JPanel panel = new JPanel();
+		GridLayout layout = new GridLayout(3, 2);
+		panel.setLayout(layout);
+		JLabel usernameLabel = new JLabel("Username: ");
+		JLabel passwordLabel = new JLabel("Password: ");
+		JTextField username = new JTextField("Enter Username Here");
+		JTextField password = new JTextField("Enter Password Here");
+		JButton login = new JButton("Login");
+		JButton register = new JButton("Register");
+		
+		panel.add(usernameLabel);
+		panel.add(username);
+		panel.add(passwordLabel);
+		panel.add(password);
+		panel.add(login);
+		panel.add(register);
+		
+		frame.getContentPane().add(panel);
+		frame.setVisible(true);
+	}
+	
+	public boolean connect(String user, String pass) {
+		try {
+			connection = DriverManager.getConnection(URL);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public Connection getConnection() {
+		return this.connection;
+	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			//do nothing
+		}
+	}
+	
+	public boolean login()
+	{
+		return true;
+	}
+	
+	public byte[] getNewSalt();
+	{
+		Random RANDOM = new SecureRandom();
+		byte[] salt = new byte[16];
+		RANDOM.nextBytes(salt);
+		return salt;
+	}
+	
+	
+
+}

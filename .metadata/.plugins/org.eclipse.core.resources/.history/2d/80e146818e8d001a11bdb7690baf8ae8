@@ -1,0 +1,11 @@
+
+public class Testing {
+	
+	public static void main(String args[])
+	{
+		DatabaseConnectionService dbserver = new DatabaseConnectionService();
+		dbserver.connect();
+		dbserver.closeConnection();
+	}
+
+}

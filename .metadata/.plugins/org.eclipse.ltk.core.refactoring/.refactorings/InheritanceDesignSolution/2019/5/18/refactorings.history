@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;GameAdvanceListener.java&apos; to &apos;ArcadeGameProject/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;InheritanceDesignSolution&apos;&#x0D;&#x0A;- Destination element: &apos;ArcadeGameProject/src/(default package)&apos;&#x0D;&#x0A;- Original element: &apos;game.GameAdvanceListener.java&apos;" description="Copy compilation unit" destination="=ArcadeGameProject/src&lt;" element1="/src&lt;game{GameAdvanceListener.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1556940696445" units="1" version="1.0"/>
+</session>

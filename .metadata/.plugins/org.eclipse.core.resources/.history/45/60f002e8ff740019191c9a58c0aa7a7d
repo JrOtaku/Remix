@@ -1,0 +1,331 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D.Double;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComponent;
+
+public class GameComponent extends JComponent {
+
+	private ArrayList<Character> chars = new ArrayList<>();
+	private ArrayList<Platform> platforms = new ArrayList<>();
+	private ArrayList<Monster1> monsters1 = new ArrayList<>();
+	private ArrayList<Monster2> monsters2 = new ArrayList<>();
+	private ArrayList<Bubble> bubbles = new ArrayList<>();
+	private ArrayList<Fruit> fruits = new ArrayList<>();
+	public ArrayList<Integer> xFruitPosition = new ArrayList<>();
+	public ArrayList<Integer> yFruitPosition = new ArrayList<>();
+	private ArrayList<PhysicalObject> objectToDestroy = new ArrayList<>();
+	public Hero hero;
+	boolean collision = false;
+	boolean initialized = false;
+	boolean changingLevel = true;
+	public Rectangle rect;
+	public LevelReader lr;
+	public boolean reset = false;
+
+	public GameComponent() {
+
+	}
+
+// refer to raindrops game gamecomponent class (this adds physical objects to the frame)
+
+	public Hero createHero(int x, int y, int lives) {
+		Hero hero = new Hero(x, y, 3);
+		this.hero = hero;
+		return hero;
+	}
+
+	public void killHero(int x, int y) {
+		hero.lifeCount = hero.lifeCount - 1;
+		System.out.println("Hero lives: " + hero.lifeCount);
+		if (hero.lifeCount < 0) {
+			this.reset = true;
+		}
+		objectToDestroy.add(this.hero);
+		this.hero = createHero(x, y, this.hero.lifeCount);
+	}
+
+	public void reset() {
+		this.lr.readAndCreate(this);
+
+	}
+
+	public void createPlatform(int x, int y) {
+		Platform platform = new Platform(x, y, 50, 50);
+		platforms.add(platform);
+	}
+
+	public void createBubble(int x, int y, boolean isRight, boolean isHeroBubble) {
+		Bubble bubble = new Bubble(x, y, isRight, isHeroBubble);
+		bubbles.add(bubble);
+	}
+	
+	public void createFruit()
+	{
+		int index = (int) (Math.random() * (xFruitPosition.size()));
+		Fruit fruit = new Fruit((int) xFruitPosition.get(index), (int) yFruitPosition.get(index));
+		fruits.add(fruit);
+	}
+
+	public void createStage() {
+
+		Platform floor = new Platform(0, 900, 1000, 100);
+		Platform leftWall = new Platform(0, 0, 100, 1000);
+		Platform rightWall = new Platform(900, 0, 100, 1000);
+		Platform ceiling = new Platform(0, 0, 1000, 100);
+		platforms.add(floor);
+		platforms.add(leftWall);
+		platforms.add(rightWall);
+		platforms.add(ceiling);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		if (changingLevel) {
+			return;
+		}
+
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+
+		// System.out.println();
+
+		for (Platform platform : platforms) {
+			if (!(platform == null)) {
+				platform.drawOn(g2);
+			}
+		}
+		if (!(hero == null)) {
+			hero.drawOn(g2);
+		}
+
+		for (Character character : chars) {
+			if (!(character == null)) {
+				character.drawOn(g2);
+			}
+		}
+		for (Monster1 monster1 : monsters1) {
+			if (!(monster1 == null)) {
+				monster1.drawOn(g2);
+			}
+		}
+		for (Monster2 monster2 : monsters2) {
+			if (!(monster2 == null)) {
+				monster2.drawOn(g2);
+			}
+		}
+		for (Bubble bubble : bubbles) {
+			if (!(bubble == null)) {
+				bubble.drawOn(g2);
+			}
+		}
+		for (Fruit fruit : fruits)
+		{
+			if(!(fruit == null))
+			{
+				fruit.drawOn(g2);
+			}
+		}
+	}
+
+	public void checkOnFloor() {
+		hero.onFloor = false;
+		for (Monster1 monster1 : monsters1) {
+			monster1.onFloor = false;
+		}
+		for (Monster2 monster2 : monsters2) {
+			monster2.onFloor = false;
+		}
+		if (changingLevel) {
+			return;
+		}
+		for (Bubble bubble : bubbles) {
+			if (!(bubble == null)) {
+				if(bubble.bubbleHero(bubble.area, hero)) {
+					killHero(hero.initalXPos, hero.intialYPos);
+				}
+				if(bubble.area.intersects(hero.area) && bubble.fill!=FillType.NOTHING) {
+					objectToDestroy.add(bubble);
+					switch(bubble.fill)
+					{
+					case NOTHING:
+						break;
+					case Monster1:
+					case Monster2:
+						createFruit();
+						break;
+					}
+				}
+			}
+		}
+		for(Monster1 monster1 : monsters1) {
+			for(Bubble bubble : bubbles) {
+				if(bubble.bubbleMonster1(bubble.area, monster1)) {
+				bubble.fill = FillType.Monster1;
+				objectToDestroy.add(monster1);
+				}
+			}
+		}
+		for(Monster2 monster2 : monsters2) {
+			for(Bubble bubble : bubbles) {
+				if(bubble.bubbleMonster1(bubble.area, monster2)) {
+				bubble.fill = FillType.Monster2;
+				objectToDestroy.add(monster2);
+				}
+			}
+		}
+		for (Platform platform : platforms) {
+			if (!(platform == null)) {
+				platform.update();
+				hero.collisionDetection(platform.hitBox(), hero.hitBox());
+				for (Monster1 monster1 : monsters1) {
+					if (!(monster1 == null)) {
+						monster1.collisionDetection(platform.hitBox(), monster1.hitBox());
+					}
+				}
+				for (Monster2 monster2 : monsters2) {
+					if (!(monster2 == null)) {
+						monster2.collisionDetection(platform.hitBox(), monster2.hitBox());
+					}
+				}
+				for (Bubble bubble : bubbles) {
+					if (!(bubble == null)) {
+						bubble.collisionDetectionBubble(platform.hitBox(), bubble.hitBox());
+					}
+				}
+			}
+		}
+	}
+
+	public void updateCharacters() {
+		if (!(hero == null)) {
+			hero.update();
+		}
+		for (Character character : chars) {
+			if (!(character == null)) {
+				character.update();
+			}
+		}
+		for (Bubble bubble : bubbles) {
+			if (!(bubble == null)) {
+				bubble.update();
+			}
+			if (bubble.isPopable) {
+				// System.out.println("pop");
+				objectToDestroy.add(bubble);
+				switch(bubble.fill) {
+				case NOTHING:
+					break;
+				case Monster1:
+					createMonster1(bubble.xPos, bubble.yPos);
+					break;
+				case Monster2:
+					createMonster2(bubble.xPos,bubble.yPos);
+					break;
+				}
+			}
+		}
+		for (Monster1 monster1 : monsters1) {
+			if (!(monster1 == null)) {
+				monster1.update();
+			}
+		}
+		for (Monster2 monster2 : monsters2) {
+			if (!(monster2 == null)) {
+				// System.out.println("create bubble");
+				if (Math.random() > 0.985) {
+
+					createBubble(monster2.xPos, monster2.yPos, monster2.isRight, false);
+					
+				}
+				monster2.update();
+
+			}
+		}
+	}
+
+	public void updateState() {
+		checkOnFloor();
+		updateCharacters();
+		detectCollisions();
+		remove();
+		if (reset) {
+			reset = false;
+			reset();
+		}
+	}
+
+	public void remove() {
+		for (PhysicalObject obj : objectToDestroy) {
+			bubbles.remove(obj);
+			monsters1.remove(obj);
+			monsters2.remove(obj);
+		}
+	}
+
+	public void detectCollisions() {
+		for (Monster1 monster1 : monsters1) {
+			if (!(monster1 == null)) {
+				if (monster1.area.intersects(hero.area)) {
+					// hero.die
+					// System.out.println("Hero hit monster1");
+					killHero(hero.initalXPos, hero.intialYPos);
+				}
+			}
+		}
+		for (Monster2 monster2 : monsters2) {
+			if (!(monster2 == null)) {
+				if (monster2.area.intersects(hero.area)) {
+					// hero.die
+					// System.out.println("Hero hit monster2");
+					killHero(hero.initalXPos, hero.intialYPos);
+				}
+			}
+		}
+		for (Bubble bubble : bubbles) {
+			if (!(bubble == null)) {
+				for (Platform platform : platforms) {
+					if (bubble.area.intersects(platform.area)) {
+						// System.out.println("bubble hit wall");
+
+					}
+				}
+				if (!(bubble.isHeroBubble) && bubble.area.intersects(hero.area)) {
+					System.out.println("enemy bubble hit hero");
+					killHero(hero.initalXPos, hero.intialYPos);
+				}
+			}
+		}
+	}
+
+	public void drawScreen() {
+		// TODO Auto-generated method stub
+		this.repaint();
+
+	}
+
+	public void clearPlatforms() {
+		this.platforms.clear();
+		this.monsters1.clear();
+		this.monsters2.clear();
+		this.bubbles.clear();
+	}
+
+	public void createMonster1(int x, int y) {
+		Monster1 monster1 = new Monster1(x, y);
+		monsters1.add(monster1);
+		// TODO Auto-generated method stub
+
+	}
+
+	public void createMonster2(int x, int y) {
+		Monster2 monster2 = new Monster2(x, y);
+		monsters2.add(monster2);
+		// TODO Auto-generated method stub
+
+	}
+
+}

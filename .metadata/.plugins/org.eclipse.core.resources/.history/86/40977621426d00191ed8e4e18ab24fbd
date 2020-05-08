@@ -1,0 +1,17 @@
+
+public class Character extends PhysicalObject {
+	private boolean isAlive;
+	
+	public Character(int xInitPos, int yInitPos) {
+		this.xPos=xInitPos;
+		this.yPos=yInitPos;
+		this.onFloor=true;
+		
+	}
+	
+	public void die() {
+		
+	}
+	
+	
+}

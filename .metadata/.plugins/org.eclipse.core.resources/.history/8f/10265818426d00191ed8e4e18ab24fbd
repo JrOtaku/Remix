@@ -1,0 +1,10 @@
+
+public class Hero extends Character {
+	private final int CHARACTERSIZE = 25;
+	private int lifeCount;
+
+	public Hero() {
+		
+	}
+
+}
